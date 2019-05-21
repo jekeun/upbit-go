@@ -4,6 +4,8 @@ type OrderChance struct {
 	BidFee string       `json:"bee_fee"`
 	AskFee string       `json:"ask_fee"`
 	Market ChanceMarket `json:"market"`
+	BidAccount Account  `json:"bid_account"`
+	AskAccount Account  `json:"ask_account"`
 }
 
 type ChanceMarket struct {
@@ -15,8 +17,6 @@ type ChanceMarket struct {
 	Ask        Bid      `json:"ask"`
 	MaxTotal   string   `json:"max_total"`
 	State      string   `json:"state"`
-	BidAccount Account  `json:"bid_account"`
-	AskAccount Account  `json:"ask_account"`
 }
 
 type Bid struct {

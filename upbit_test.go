@@ -8,8 +8,8 @@ import (
 var client *Client
 
 const (
-	accessKey = ""
-	secretKey = ""
+	accessKey = "rW6BxwdYHonXafavR2jxvQKvffex8NuWp8OjMb7W"
+	secretKey = "aNI0rwjKf6EtQ8chZaW348GO5cBVDyPcROyXTmQh"
 )
 
 func setUp() {
@@ -179,7 +179,7 @@ func ExampleAccounts() {
 	// KRW
 }
 
-func ExampleOrderChange() {
+func ExampleOrderChance() {
 	setUp()
 
 	orderChance, err := client.OrderChance("KRW-BTC")

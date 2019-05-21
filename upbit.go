@@ -3,11 +3,9 @@ package upbit
 import (
 	"net/url"
 	"strconv"
-
 	"github.com/dgrijalva/jwt-go"
-
-	"github.com/hannut91/upbit-go/types"
-	"github.com/hannut91/upbit-go/util"
+	"github.com/jekeun/upbit-go/types"
+	"github.com/jekeun/upbit-go/util"
 )
 
 const (
