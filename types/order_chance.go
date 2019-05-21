@@ -1,7 +1,7 @@
 package types
 
 type OrderChance struct {
-	BeeFee string       `json:"bee_fee"`
+	BidFee string       `json:"bee_fee"`
 	AskFee string       `json:"ask_fee"`
 	Market ChanceMarket `json:"market"`
 }
