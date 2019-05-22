@@ -8,8 +8,8 @@ import (
 var client *Client
 
 const (
-	accessKey = "rW6BxwdYHonXafavR2jxvQKvffex8NuWp8OjMb7W"
-	secretKey = "aNI0rwjKf6EtQ8chZaW348GO5cBVDyPcROyXTmQh"
+	accessKey = "Your Access Key"
+	secretKey = "Your Secret Key"
 )
 
 func setUp() {
