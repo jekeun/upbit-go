@@ -1,11 +1,11 @@
 package upbit
 
 import (
-	"net/url"
-	"strconv"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jekeun/upbit-go/types"
 	"github.com/jekeun/upbit-go/util"
+	"net/url"
+	"strconv"
 )
 
 const (
@@ -265,12 +265,19 @@ func (client *Client) Orders(
 	page int,
 	orderBy string,
 ) (orders []*types.Order, err error) {
-	query := map[string]string{
-		"market":   market,
-		"state":    state,
-		"page":     strconv.Itoa(page),
-		"order_by": orderBy,
+
+	query := make(map[string]string)
+
+	if len(market) > 0 {
+		query["market"] = market
 	}
+
+	if len(state) > 0 {
+		query["state"] = state
+	}
+
+	query["page"] = strconv.Itoa(page)
+	query["order_by"] = orderBy
 
 	token, err := client.Token(query)
 	if err != nil {
