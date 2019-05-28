@@ -6,7 +6,7 @@ Upbit full document is [here](https://docs.upbit.com/).
 
 ### Installation
 ```bash
-go get github.com/hannut91/upbit-go
+go get github.com/jekeun/upbit-go
 ```
 
 ## Getting started
@@ -16,8 +16,7 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/hannut91/upbit-go"
+	"github.com/jekeun/upbit-go"
 )
 
 func main() {
