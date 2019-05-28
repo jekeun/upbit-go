@@ -52,6 +52,7 @@ func Request(options *RequestOptions, result interface{}) (
 		return
 	}
 
+
 	err = json.Unmarshal(Body, result)
 	if err != nil {
 		return

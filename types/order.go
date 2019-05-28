@@ -18,3 +18,12 @@ type Order struct {
 	ExecutedVolume  string `json:"executed_volume"` // 체결된 양
 	TradeCount      string `json:"trade_count"`     // 해당 주문에 걸린 체결 수
 }
+
+type OrderInfo struct {
+	Identifier string		// 조회용 사용자 지정값
+	Side string				// 주문 종류 : bid, ask
+	Market string			// 주문 코인 및 마켓 : KRW-BTC
+	Price string			// 주문 가격
+	Volume string			// 주문 수량
+	OrdType string			// 주문 타입 : limit
+}

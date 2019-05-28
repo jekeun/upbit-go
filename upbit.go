@@ -6,6 +6,7 @@ import (
 	"github.com/jekeun/upbit-go/util"
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -259,6 +260,10 @@ func (client *Client) OrderChance(
 	return
 }
 
+/*
+ * get Order list
+ * if Market is empty, get all orders
+ */
 func (client *Client) Orders(
 	market string,
 	state string,
@@ -295,20 +300,61 @@ func (client *Client) Orders(
 	return
 }
 
+/*
+ * get OrderMap for each state list
+ */
+func (client *Client) OrdersMap(
+	market string,
+	state string,
+	page int,
+	orderBy string) (orderMap map[string][]*types.Order, err error) {
+
+	orders, err := client.Orders(market, state, page, orderBy)
+
+	orderMap = make(map[string][]*types.Order)
+
+	if err != nil {
+		return
+	}
+
+	bidOrders := make([]*types.Order,0)
+	askOrders := make([]*types.Order,0)
+
+	if len(orders) > 0 {
+		for _, value := range orders {
+			if strings.Compare(value.Side, types.ORDERSIDE_BID) == 0 {	//  매수 주문
+				bidOrders = append(bidOrders, value)
+			} else if strings.Compare(value.Side, types.ORDERSIDE_ASK) == 0 {	// 매도 주문
+				askOrders = append(askOrders, value)
+			} else {
+				// Ignore
+			}
+		}
+		orderMap[types.ORDERSIDE_BID] = bidOrders
+		orderMap[types.ORDERSIDE_ASK] = askOrders
+	}
+
+	return
+}
+
+func (client *Client) OrderByInfo (orderInfo types.OrderInfo) (order *types.Order, err error) {
+	return client.Order(orderInfo.Identifier, orderInfo.Side, orderInfo.Market, orderInfo.Price, orderInfo.Volume, orderInfo.OrdType)
+}
+
 func (client *Client) Order(
 	identifier string,
 	side string,
 	market string,
 	price string,
 	volume string,
-	ord_type string,
+	ordType string,
 ) (order *types.Order, err error) {
 	query := map[string]string{
 		"market":     market,
 		"side":       side,
 		"volume":     volume,
 		"price":      price,
-		"ord_type":   ord_type,
+		"ord_type":   ordType,
 		"identifier": identifier,
 	}
 

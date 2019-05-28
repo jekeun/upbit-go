@@ -2,7 +2,9 @@ package upbit
 
 import (
 	"fmt"
+	"github.com/jekeun/upbit-go/types"
 	"log"
+	"testing"
 )
 
 var client *Client
@@ -191,6 +193,39 @@ func ExampleOrderChance() {
 
 	// Output:
 	// KRW-BTC
+}
+
+func TestWaitOrders(t *testing.T) {
+	setUp()
+	orders, err := client.Orders("",types.ORDERSTATE_WAIT, 1, types.ORDERBY_DESC)
+
+	if err != nil {
+		t.Error("Order 체크 에러")
+	}
+
+	fmt.Println(orders)
+}
+
+func TestWaitOrders_ByMap(t *testing.T) {
+	setUp()
+	orderMap, err := client.OrdersMap("", types.ORDERSTATE_WAIT, 1, types.ORDERBY_DESC)
+
+	if err != nil {
+		t.Error("get Orders Error")
+	}
+
+	bidOrders := orderMap[types.ORDERSIDE_BID]
+
+	for _, value := range bidOrders {
+		fmt.Println(value)
+	}
+
+	askOrders := orderMap[types.ORDERSIDE_ASK]
+
+	for _, value := range askOrders {
+		fmt.Println(value)
+	}
+
 }
 
 // func ExampleSell() {
