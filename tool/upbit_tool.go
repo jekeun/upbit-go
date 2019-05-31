@@ -1,7 +1,8 @@
-package upbit
+package tool
 
 import (
 	"fmt"
+	"github.com/jekeun/upbit-go"
 	"github.com/jekeun/upbit-go/types"
 	"github.com/jekeun/upbit-go/util"
 	"strconv"
@@ -123,7 +124,7 @@ func GetBalanceCoinsCanAsk(balances []*types.Balance) (coins []string) {
 	return
 }
 
-func AskOrder(client *Client, coin string, balance string, candle *types.DayCandle, ordType string) {
+func AskOrder(client *upbit.Client, coin string, balance string, candle *types.DayCandle, ordType string) {
 
 	priceStr :=  fmt.Sprintf("%.8f", candle.TradePrice)
 	volumeStr :=  balance
@@ -148,7 +149,7 @@ func AskOrder(client *Client, coin string, balance string, candle *types.DayCand
 /*
  * 시장가 매도
  */
-func AskMarketOrder(client *Client, coin string, balance string) {
+func AskMarketOrder(client *upbit.Client, coin string, balance string) {
 
 	volumeStr :=  balance
 
