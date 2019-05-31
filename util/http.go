@@ -53,8 +53,21 @@ func Request(options *RequestOptions, result interface{}) (
 	}
 
 
+	////fmt.Println(res.Header)
+	//fmt.Println(res.StatusCode)
+	//if res.StatusCode != 200 {
+	//	bodyString := string(Body)
+	//	fmt.Println(bodyString)
+	//}
+	////remaingReq := res.Header.Get("Remaining-Req")
+	////fmt.Println(remaingReq)
 	err = json.Unmarshal(Body, result)
 	if err != nil {
+		//bodyString := string(Body)
+		//fmt.Println(bodyString)
+		//
+		////fmt.Println(Body)
+		////fmt.Println(err)
 		return
 	}
 	return

@@ -18,4 +18,6 @@ const (
 
 const (
 	ORDERTYPE_LIMIT = "limit"
+	ORDERTYPE_MARKET = "market"
+	ORDERTYPE_PRICE = "price"
 )
