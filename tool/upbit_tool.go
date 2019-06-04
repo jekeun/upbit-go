@@ -5,6 +5,7 @@ import (
 	"github.com/jekeun/upbit-go"
 	"github.com/jekeun/upbit-go/types"
 	"github.com/jekeun/upbit-go/util"
+	"log"
 	"strconv"
 	"strings"
 )
@@ -25,6 +26,9 @@ func GetBalanceMap(balances []*types.Balance) (balanceMap map[string]*types.Bala
 	return
 }
 
+/*
+ * 주문 내역으로부터 해당되는 코인 리스트 구하기
+ */
 func GetCoinsFromOrders(orders []*types.Order) (coins []string) {
 	coins = make([]string, 0)
 
@@ -36,7 +40,8 @@ func GetCoinsFromOrders(orders []*types.Order) (coins []string) {
 }
 
 /*
- * DayCandle 로부터 currentPrice 구하기
+ * DayCandle 로부터 현재가 구하기
+ * 정보가 없으면 0.0
  */
 func GetCurrentPriceFromDayCandle(candleInfo []*types.DayCandle) (currentPrice float64){
 	currentPrice = 0.0
@@ -52,6 +57,7 @@ func GetCurrentPriceFromDayCandle(candleInfo []*types.DayCandle) (currentPrice f
  * 수익률 구하기
  */
 func GetProfitRate(balance *types.Balance, currentPrice float64) (profit float64) {
+	profit = 0.0
 
 	fAvgKrwBuyPrice, err := strconv.ParseFloat(balance.AvgKrwBuyPrice, 64)
 
@@ -90,19 +96,16 @@ func ExistOrder(coin string, orderMap map[string][]*types.Order, orderSide strin
 
 	for _, value := range orders {
 		if strings.EqualFold(value.Market, coin) {
-			bExist = true
 			order = value
+			bExist = true
 			return
 		}
 	}
-
 	return
 }
 
-
-
 /*
- * 매도 가능 잔고
+ * 매도 가능 코인 목록 구하기
  */
 func GetBalanceCoinsCanAsk(balances []*types.Balance) (coins []string) {
 	coins = make([]string, 0)
@@ -124,6 +127,9 @@ func GetBalanceCoinsCanAsk(balances []*types.Balance) (coins []string) {
 	return
 }
 
+/*
+ * 매도 주문
+ */
 func AskOrder(client *upbit.Client, coin string, balance string, candle *types.DayCandle, ordType string) {
 
 	priceStr :=  fmt.Sprintf("%.8f", candle.TradePrice)
@@ -143,11 +149,10 @@ func AskOrder(client *upbit.Client, coin string, balance string, candle *types.D
 	if err != nil {
 		fmt.Println("주문 에러")
 	}
-
 }
 
 /*
- * 시장가 매도
+ * 시장가 매도 주문
  */
 func AskMarketOrder(client *upbit.Client, coin string, balance string) {
 
@@ -166,9 +171,67 @@ func AskMarketOrder(client *upbit.Client, coin string, balance string) {
 	if err != nil {
 		fmt.Println("주문 에러")
 	}
-
 }
 
+/*
+ * coin 리스트에 해당하는 Minute Candle 리스트 가져오기
+ */
+func GetMinuteCandlesByCoins(client *upbit.Client, unit int, coins []string, count int) (
+	candleMap map[string][]*types.MinuteCandle) {
+	candleMap = make(map[string][]*types.MinuteCandle)
+	for _, coin := range coins {
+		if coin == "KRW" {
+			continue
+		}
+
+		candles, err := client.MinuteCandles(unit, coin, map[string]string{
+			"count": fmt.Sprintf("%d", count),
+		})
+
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		candleMap[coin] = candles
+	}
+
+	return
+}
+
+/*
+ * coin 리스트에 해당하는 현재가 정보 가져오기
+ */
+
+func GetTickerByCoins(client *upbit.Client, coins []string) (tickerMap map[string]*types.MinuteCandle) {
+	tickerMap = make(map[string]*types.MinuteCandle)
+	return
+}
+
+/*
+ * coin 리스트에 해당하는 Day Candle 리스트 가져오기
+ */
+func GetDayCandlesByCoins(client *upbit.Client, coins []string, count int) (candleMap map[string][]*types.DayCandle) {
+	candleMap = make(map[string][]*types.DayCandle)
+	for _, coin := range coins {
+		if coin == "KRW" {
+			continue
+		}
+
+		candles, err := client.DayCandles(coin, map[string]string{
+			"count": fmt.Sprintf("%d", count),
+		})
+
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		candleMap[coin] = candles
+	}
+
+	return
+}
 
 func GetPriceCanOrder(price float64) (orderPriceStr string) {
 
