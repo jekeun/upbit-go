@@ -152,6 +152,15 @@ func AskOrder(client *upbit.Client, coin string, balance string, candle *types.D
 }
 
 /*
+ * 주문 취소 및 시장가 재주문
+ */
+func CancelOrderAndAskMarketOrder(client *upbit.Client, cancelOrder *types.Order) {
+	client.CancelOrder(cancelOrder.Uuid)
+
+	AskMarketOrder(client, cancelOrder.Market, cancelOrder.Volume)
+}
+
+/*
  * 시장가 매도 주문
  */
 func AskMarketOrder(client *upbit.Client, coin string, balance string) {
